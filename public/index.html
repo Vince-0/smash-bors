@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smash Bors</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Use Google Fonts CDN instead of local font file -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Import Three.js libraries for visual effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.175.0/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.175.0/examples/js/postprocessing/EffectComposer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.175.0/examples/js/postprocessing/RenderPass.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.175.0/examples/js/postprocessing/ShaderPass.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.175.0/examples/js/shaders/CopyShader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.175.0/examples/js/shaders/UnrealBloomPass.min.js"></script>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DYYB4HMDZ0"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-DYYB4HMDZ0');
+        </script>
+</head>
+<body>
+    <div id="login-screen">
+        <div id="landing-title" class="landing-title">Smash Bors</div>
+
+        <div class="login-container">
+            <h1>Enter Your Name</h1>
+            <form id="name-form">
+                <input type="text" id="player-name" maxlength="18" placeholder="Max 18 chars" required>
+                <button type="submit">Join Game</button>
+            </form>
+        </div>
+    </div>
+    <div id="scoreboard" style="display: none;">
+        <div class="timer">Round <span id="round-number">1</span> - <span id="time-remaining">3:00</span></div>
+        <table id="score-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Kills</th>
+                    <th>Deaths</th>
+                    <th>K/D</th>
+                </tr>
+            </thead>
+            <tbody id="score-table-body">
+                <!-- Scores will be inserted here dynamically -->
+            </tbody>
+        </table>
+        <div id="round-message" class="round-message" style="display: none;">
+            ROUND OVER<br>
+            <div id="boss-message">PLAYER IS BOSS</div>
+            NEXT ROUND IN <span id="countdown">10</span> SECONDS
+        </div>
+        <div id="countdown-message" class="round-message" style="display: none;">
+            ROUND STARTING IN<br>
+            <span id="round-countdown">5</span> SECONDS
+        </div>
+        <div id="fight-message" class="fight-message" style="display: none;">
+            FIGHT!
+        </div>
+        <!-- Game sound effects -->
+        <audio id="fight-sound" src="assets/sounds/explosion.mp3" preload="auto"></audio>
+        <audio id="jump-sound" src="assets/sounds/jump.mp3" preload="auto"></audio>
+        <audio id="death-sound" src="assets/sounds/8bit/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Simple Damage Sounds/sfx_damage_hit5.wav" preload="auto"></audio>
+        <audio id="round-end-sound" src="assets/sounds/fanfares/sfx_sounds_fanfare3.wav" preload="auto"></audio>
+        <audio id="score-sound" src="assets/sounds/positive/sfx_sounds_powerup4.wav" preload="auto"></audio>
+    </div>
+    <canvas id="gameCanvas" style="display: none;"></canvas>
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.175.0/build/three.module.js'; // Load from CDN
+    </script>
+    <script src="config.js"></script>
+    <script src="Guy.js" type="module"></script>
+    <script src="MinecraftSkinFetcher.js" type="module"></script>
+    <script src="app.js" type="module"></script>
+</body>
+</html>

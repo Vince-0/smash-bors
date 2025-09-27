@@ -1,0 +1,63 @@
+STATUS: COMPLETE:
+PHYSICS:Add a horizontal platform as a 2D plane for avatars to stand on. The platform should be 10% of the height and a length of 10x of the avatars' geometry. The platform should be white.
+PHYSICS:Make the platform a solid geometric shape that avatars stand on and cannot pass through using collision detection.
+PHYSICS:Implement collision detection between players' avatars.
+PHYSICS:Make avatars' geometric shapes non-spinning.
+PHYSICS:Make the size of the avatars 25%
+PHYSICS:Fix avatar vertical movement by adding a gravity mechanism that allows the avatars to jump off the platform using the space key
+PHYSICS:Add intertia to avatars' jumping, making them move more realistically
+INFRA:Create a config file that the server reads for physics parameters: including accelaration rate, deceleration , maximum speed
+BUG: avatars get stuck on each other, they should bounce off of each other
+INFRA: client side physics variables should use server side values without them being mutable on the client side
+BUG: avatars now move through each other, they should initially bounce off each other as it is now and then push each other consistently, never move through each other
+BUG: avatars do not move fluidly when switching direction quickly and sometimes move slowly
+PHYSICS:Jump action: make up arrow jump
+PHYSICS:Crush action: make down arrow accelarate the avatar downward
+PHYSICS:Add physics to allow avatars to push each other off of the platform resulting in them falling off the platform and resetting their position 10 avatar sizes above the platform.Platform does not have edges to fall off of, the playable arena size should be 30% larger in width than the platform to allow the avatars to fall off of it to the bottom of the screen where there should be a second platform to explode the avatars.
+BUG: Avatars get stuck in the centre of the platform
+VISUAL:A player's avatar should be green but other players should be red
+GAMEPLAY:Add an input box to accept text of up to 4 characters to use as a player name before joining the game
+VISUAL:Add player names above each avatar.
+GAMEPLAY:Add a score counter for each player that increments when a player pushes another player off the platform.
+GAMEPLAY:Add a death counter for each player that increments when a player falls off the platform.
+VISUAL:Add a scoreboard that displays the scores and deaths of all players.
+GAMEPLAY: At the end of a round, pause the game for 10 seconds before starting the next round. Show a message in big red letters under the scoreboard stating on first line the rank 1 player name "IS BOSS". Second line: NEXT ROUND IN 10. If there is a tie for first place, show "NO BOSS" instead.
+GAMEPLAY: At the start of a round, show a message in big red letters under the scoreboard stating "FIGHT!".
+VISUAL: Reduce the avatar size by 50%
+GAMEPLAY: Horizontal motion is not consistent especially when changing direction quickly. What can be done to make it more consistent?
+
+STATUS: PENDING:
+GAMEPLAY: Set a minimum speed setting to 1.2
+GAMEPLAY: The double jump seems to only activate at a height, it should activate at any height the player is in the air.
+
+STATUS:NEW:
+GAMEPLAY: After death the player respawn seems to get stuck in the air when no movment is pressed, the player respawn should fall to the platform every time.
+GAMEPLAY: Round start: when a second player joins the first, start the round with the FIGHT! message
+UX: Play an audio tone that sounds like an 8bit NES game at the end of the round and when a player scores a point.
+UX: Make the scoreboard smaller and positioned to the top right of the screen.
+
+GAMEPLAY: If a player is under the platform, they appear to be able to teleport above the platform with direction movement, this should be possible however there should be a visual indicator that they are reaching for the platform liek a grab that then positions them to climb back up.
+GAMEPLAY: Physics parameters should be configurable to allow different avatar types with corresponding physical properties. There should be up to 4 avatar types depending on the type of geometry the avatar is.
+GAMEPLAY: Avatar health: parameter that is reduced when avatars collide with each other, effecting the avatar with the most speed and inertia the least. implement with associated physical parameters so that a lower health avatar is more easily pushed off the platform by other avatars with higher health.
+GAMEPLAY: Avatar energy: parameter that is reduced when avatar jump, double jump, crush and punch. implement with associated physical parameters so that a lower energy avatar moves more slowly after the energy threshold reaches 10% of total energy.
+
+PHYSICS:Punch action: Make space key a punch action that pushes any nearby players away with parameters for force that affect how far they are pushed
+BUG: Punch (space key) removed because avatars are getting stuck in the center of the platform.
+GAMEPLAY: larger avatar for the leader with more inertia
+
+INFRA:Network Optimization: With more frequent physics updates, we may need to optimize network traffic
+INFRA:Implement game rooms to separate players into different sessions
+
+WORKFLOW:Suggest any changes to the workflow so far with regards to the chat history and todo files. Is there any additional information that would be useful?
+WORKFLOW:Create a README file that explains the project folder structure and files with short file contents descriptions so that we could split the files up between logical boundaries like functions
+WORKFLOW:Number each set of code changes in the chat history so that we can refer to them in the todo file, for example: CATEGORY:PHYSICS:Instructions for task:CODECHANGE:1,4,6,10
+WORKFLOW:Suggest any changes to the code files and folder structure to better separate code into logical boundaries that help create better maintenance and coding practices
+
+UX:
+Particle Effect: A small burst of particles around the avatar when double jumping
+Color Flash: A brief color change or glow effect on the avatar
+Trail Effect: A motion trail behind the avatar during the double jump
+Sound Effect: A distinct sound for double jumps (different from regular jumps)
+Animation Change: A special animation for the Guy model during double jumps
+Text Indicator: A small "Double Jump!" text that appears briefly
+Shockwave Effect: A circular wave that emanates from the avatar's position

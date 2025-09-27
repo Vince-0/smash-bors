@@ -1,0 +1,340 @@
+# Smash Bros Clone - Multiplayer 3D Arena Game
+
+A real-time multiplayer 3D arena game built with Three.js and WebSockets, inspired by Super Smash Bros. Players control 3D avatars on a platform and compete to push each other off while avoiding falling themselves.
+
+## Game Overview
+
+This is a physics-based multiplayer game where players:
+- Control 3D avatars (geometric shapes or 3D humanoid figures)
+- Move around a floating platform in 3D space
+- Jump, double-jump, and crush to navigate
+- Push other players off the platform to score points
+- Respawn after falling with explosion effects
+- Compete in rounds with scoring and leaderboards
+
+## Project Structure
+
+```
+smash-bors-clone/
+├── .augment/                    # Augment AI workflow files
+│   ├── augment-README          # This README file
+│   ├── augment-chathistory     # Complete chat history with AI
+│   └── augment-tasklist        # Task management and status tracking
+├── public/                     # Client-side assets
+│   ├── index.html             # Main HTML entry point
+│   ├── app.js                 # Main client-side game logic
+│   ├── config.js              # Client-side physics configuration
+│   ├── Guy.js                 # 3D humanoid avatar model (optional)
+│   └── style.css              # Game styling and UI
+├── server.js                  # Node.js WebSocket server
+├── config.js                  # Server-side physics configuration
+├── package.json               # Node.js dependencies
+└── package-lock.json          # Dependency lock file
+```
+
+## Key Files Description
+
+### Server-Side Files
+
+- **`server.js`**: Main game server handling WebSocket connections, player state management, physics calculations, collision detection, and game round management
+- **`config.js`**: Centralized physics parameters including movement, jumping, collision, platform dimensions, and game mechanics
+
+### Client-Side Files
+
+- **`public/index.html`**: HTML entry point with Three.js CDN imports and canvas setup
+- **`public/app.js`**: Main client game engine with Three.js rendering, WebSocket communication, input handling, and visual effects
+- **`public/config.js`**: Client-side physics configuration (synced from server)
+- **`public/Guy.js`**: Optional 3D humanoid avatar model with animations
+- **`public/style.css`**: Game UI styling, canvas setup, and visual elements
+
+### Workflow Files
+
+- **`.augment/augment-chathistory`**: Complete development history and AI interactions
+- **`.augment/augment-tasklist`**: Task management with status tracking (COMPLETE, PENDING, NEW)
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- npm (Node Package Manager)
+- Modern web browser with WebGL support
+- Network connection for multiplayer functionality
+
+## Installation
+
+1. **Clone or download the project**
+```bash
+git clone <repository-url>
+cd smash-bors-clone
+```
+
+2. **Install dependencies**
+```bash
+npm install
+```
+
+3. **Start the server**
+```bash
+node server.js
+```
+
+4. **Open the game**
+   - Navigate to `http://localhost:3000` in your web browser
+   - Open multiple browser tabs/windows to test multiplayer
+
+## Configuration
+
+### Physics Parameters
+
+The game uses a centralized configuration system in `config.js` files:
+
+```javascript
+// Movement physics
+movement: {
+    acceleration: 0.0225,    // How fast avatars accelerate
+    deceleration: 0.015,     // How fast they slow down
+    maxSpeed: 0.3,           // Maximum movement speed
+    minSpeed: 1.2            // Minimum speed threshold
+}
+
+// Jumping mechanics
+jumping: {
+    jumpVelocity: 0.25,      // Initial jump force
+    doubleJumpVelocity: 0.2, // Double jump force
+    gravity: 0.012,          // Downward acceleration
+    crushVelocity: 0.3       // Downward crush force
+}
+
+// Platform and collision
+platform: {
+    width: 8,                // Platform width
+    height: 0.2,             // Platform thickness
+    playableWidth: 10.4      // Area before falling off
+}
+```
+
+### Server Configuration
+
+- **Port**: Default 3000 (configurable in `server.js`)
+- **Physics Update Rate**: 60 FPS for smooth gameplay
+- **WebSocket**: Real-time communication for multiplayer
+
+## How to Play
+
+### Controls
+- **Arrow Keys**: Move left/right
+- **Up Arrow**: Jump (double-jump available in air)
+- **Down Arrow**: Crush (accelerate downward when in air)
+- **Space**: Jump (alternative to up arrow)
+
+### Gameplay
+1. **Join Game**: Enter a player name (up to 18 characters) before joining
+2. **Movement**: Use arrow keys to move around the platform
+3. **Jumping**: Jump and double-jump to navigate and avoid other players
+4. **Combat**: Push other players off the platform to score points
+5. **Respawning**: Fall off the platform to explode and respawn above
+6. **Scoring**: Earn points for pushing others off, track deaths when you fall
+7. **Rounds**: Games have rounds with intermissions showing leaderboards
+
+### Visual Elements
+- **Your Avatar**: Green color
+- **Other Players**: Red color
+- **Player Names**: Displayed above each avatar
+- **Scoreboard**: Shows scores and deaths for all players
+- **Platform**: White main platform with red bottom collision platform
+- **Effects**: Explosion effects when falling, flashing during invulnerability
+
+## Development
+
+### Adding New Features
+
+1. **Physics Changes**: Modify `config.js` files for both server and client
+2. **Visual Effects**: Add to `public/app.js` in the rendering section
+3. **Game Mechanics**: Update `server.js` for server-side logic
+4. **UI Elements**: Modify `public/index.html` and `public/style.css`
+
+### Code Architecture
+
+- **Client-Server Sync**: Server authoritative with client prediction
+- **Physics Engine**: Custom physics with collision detection and response
+- **Rendering**: Three.js with geometric shapes or 3D models
+- **State Management**: WebSocket messages for real-time updates
+
+### Testing
+
+1. **Single Player**: Test basic movement and physics
+2. **Multiplayer**: Open multiple browser tabs
+3. **Network**: Test on different devices on same network
+4. **Performance**: Monitor frame rate and network traffic
+
+## Deployment
+
+### Local Network
+```bash
+# Find your local IP
+ipconfig getifaddr en0  # macOS
+hostname -I             # Linux
+
+# Update server.js if needed for specific IP binding
+# Players connect to http://YOUR_IP:3000
+```
+
+### Production Deployment
+
+1. **Environment Variables**
+```bash
+export PORT=3000
+export NODE_ENV=production
+```
+
+2. **Process Management** (using PM2)
+```bash
+npm install -g pm2
+pm2 start server.js --name "smash-game"
+pm2 startup
+pm2 save
+```
+
+3. **Reverse Proxy** (Nginx example)
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Connection Problems**
+   - Check firewall settings
+   - Verify port 3000 is available
+   - Ensure WebSocket support in browser
+
+2. **Performance Issues**
+   - Reduce physics update rate in config
+   - Lower avatar count for testing
+   - Check browser console for errors
+
+3. **Gameplay Issues**
+   - Verify config.js synchronization between client/server
+   - Check collision detection parameters
+   - Review physics parameters for desired feel
+
+### Debug Features
+
+- Console logging for physics events
+- Network message tracking
+- Performance monitoring in browser dev tools
+
+## Contributing
+
+1. **Task Management**: Use `.augment/augment-tasklist` for tracking features
+2. **Documentation**: Update this README for significant changes
+3. **Testing**: Test multiplayer functionality before committing
+4. **Code Style**: Follow existing patterns for consistency
+
+## Future Enhancements
+
+See `.augment/augment-tasklist` for planned features including:
+- Avatar health and energy systems
+- Different avatar types with unique physics
+- Game rooms for separate sessions
+- Audio effects and improved visuals
+- Network optimization for larger player counts
+
+## Technical Details
+
+- **Three.js Version**: 0.175.0
+- **WebSocket Library**: ws (Node.js)
+- **Physics**: Custom implementation with 60 FPS updates
+- **Rendering**: 60 FPS client-side with interpolation
+- **Network**: Real-time WebSocket communication
+- **Browser Support**: Modern browsers with WebGL support
+
+## Visual and Audio Systems
+
+### Sound System
+- Asset paths
+  - Base SFX: `public/assets/sounds/{explosion.mp3,jump.mp3}`
+  - Fanfares: `public/assets/sounds/fanfares/sfx_sounds_fanfare3.wav`
+  - Positive: `public/assets/sounds/positive/sfx_sounds_powerup4.wav`
+  - 8‑bit collection (categories): `public/assets/sounds/8bit/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/`
+    - Includes subfolders like Explosions, General Sounds (Menu, Positive/Negative, Coins, Damage), Movement (Jumping and Landing, Footsteps), Weapons, Death Screams, etc.
+    - Pruned: only `General Sounds/Simple Damage Sounds/sfx_damage_hit5.wav` is retained from the 8-bit library; unused files removed to reduce size.
+
+- Implementation (HTML5 Audio)
+  - Audio elements are declared in `public/index.html` with IDs and `preload="auto"`:
+    - `fight-sound`, `jump-sound`, `death-sound`, `round-end-sound`, `score-sound`
+  - Playback is triggered from `public/app.js` by selecting the element and calling `play()`; volume and `currentTime` are set when used.
+    - Fight: on FIGHT! message show
+    - Round end: when round over UI shows
+    - Score: when a player's kill count increases
+  - Currently wired: `fight-sound`, `round-end-sound`, `score-sound`, `jump-sound` (on local jump input), and `death-sound` (global with 800ms cooldown; short 8-bit: General Sounds/Simple Damage Sounds/sfx_damage_hit5.wav).
+- Approach
+  - Uses HTML5 `Audio` elements (no Web Audio API pipeline or `THREE.Audio` yet). This keeps implementation simple and avoids CORS/decoder complexity.
+  - If positional/spatial audio is desired later, `THREE.Audio`/`PositionalAudio` and `THREE.AudioLoader` are available via Three.js 0.175.0.
+- Example usages
+  - Fight sound (app.js): get element by ID and `play()`
+  - Round end sound (app.js): volume set to 0.5, `currentTime=0` before play
+  - Score sound (app.js): triggered when kills increase
+
+### Minecraft Skins Integration
+- Files
+  - Client fetcher: `public/MinecraftSkinFetcher.js`
+  - Client model application: `public/Guy.js` (`applyMinecraftSkin`)
+  - Server proxy endpoints: `server.js`
+- Flow
+  1. Client requests skin URL by username via `MinecraftSkinFetcher.getSkinUrl(username)`.
+  2. Server proxies Mojang APIs to avoid CORS and rate‑limit issues:
+     - `GET /api/minecraft/user/:username` → `https://api.mojang.com/users/profiles/minecraft/{username}` to resolve UUID
+     - `GET /api/minecraft/profile/:userId` → `https://sessionserver.mojang.com/session/minecraft/profile/{uuid}` to get `properties["textures"].value` (base64 JSON) and extract `textures.SKIN.url`
+  3. Client caches results per username (`skinCache`).
+  4. In `public/app.js`, when an avatar with a name appears or the name changes, it fetches the skin URL and applies it.
+  5. Application: `Guy.applyMinecraftSkin(skinUrl)` loads the texture with `THREE.TextureLoader`, disables `flipY`, and assigns a `MeshStandardMaterial` with the skin texture to head/body/limbs. Sets `hasMinecraftSkin=true` so later color updates do not override the skin.
+
+- Caching and fallback
+  - Client‑side caches: username→skinUrl (`MinecraftSkinFetcher`).
+  - On error/no skin: returns `null`; code logs a warning and leaves default materials/colors in place (no hard fallback texture).
+- Limitations
+  - No handling of layered hat/outerwear, slim (Alex) vs classic (Steve) arm geometry, or capes.
+  - No persistent server cache; requests are proxied live to Mojang.
+  - Skin mapping currently applies one material to all parts in `Guy.applyMinecraftSkin` (simple mapping).
+- Interesting usernames to test
+  - notch, jeb_, Dinnerbone, Grumm, DanTDM, Dream, Grian, MumboJumbo, Captainsparklez, Technoblade
+
+### Graphics, Textures, and Visual Effects
+- Texture systems in use
+  - File textures via `THREE.TextureLoader`:
+    - Main platform: `public/assets/textures/platform-main.jpg`
+    - Death platform: `public/assets/textures/platform-death.jpg`
+    - Clouds: `public/assets/images/{cloud1.png, cloud2.png}`
+  - Procedural/Canvas textures:
+    - Player name labels and the temporary "JUMP!" indicator use `THREE.CanvasTexture` with `THREE.SpriteMaterial` and depth disabled to always render on top.
+- Materials
+  - Avatars: `THREE.MeshStandardMaterial` with `color`, `emissive`, `metalness`, `roughness` (see `public/Guy.js`). When a Minecraft skin is applied, a textured `MeshStandardMaterial` replaces part materials.
+  - Platforms: `THREE.MeshStandardMaterial` with emissive “glow” color; auxiliary `THREE.MeshBasicMaterial` boxes are added as translucent, slightly larger shells to fake a glow outline; `THREE.EdgesGeometry` with `THREE.LineBasicMaterial` adds edge highlights.
+  - Sprites: `THREE.SpriteMaterial` for UI name labels and clouds.
+- Particles and effects
+  - Explosion on death/respawn: instanced small `SphereGeometry` meshes with `MeshBasicMaterial`, animated with gravity/fade/scale down; cleaned up after life ends.
+  - Death platform "lava" shimmer: group of small `SphereGeometry` meshes animated with sine waves and opacity pulsing.
+  - Movement trails: short‑lived particle groups spawned on double‑tap run; downward crush action spawns a one‑shot vertical trail.
+  - Background: large dark plane + multiple cloud sprites drifting horizontally, plus star meshes with twinkle animation.
+  - UI effects: CSS keyframe explosion animation applied to the on‑screen “FIGHT!” message; scoreboard and messages use a retro bitmap font via Google Fonts CDN.
+- Post‑processing
+  - Three.js example scripts for post‑processing and UnrealBloom are included in `index.html`, but the scene currently renders directly without an `EffectComposer`. Bloom can be enabled later if desired.
+
+For concrete examples, see:
+- `public/index.html` (audio tags, Three.js script imports)
+- `public/app.js` (sound triggers, particles, trails, background, platform creation)
+- `public/Guy.js` (materials, skin application)
+- `public/MinecraftSkinFetcher.js` and `server.js` (skin API flow)
