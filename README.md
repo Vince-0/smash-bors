@@ -1,3 +1,10 @@
+# Bitcoin Node Manager
+Author [https://github.com/Vince-0](https://github.com/Vince-0/Projects)
+
+Made as part of [Adventures In AI Coding 2](https://github.com/Vince-0/AdventuresInAICoding2
+
+Use at your own risk.
+
 # Smash Bros Clone - Multiplayer 3D Arena Game
 
 A real-time multiplayer 3D arena game built with Three.js and WebSockets, inspired by Super Smash Bros. Players control 3D avatars on a platform and compete to push each other off while avoiding falling themselves.
