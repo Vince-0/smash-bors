@@ -1,4 +1,4 @@
-# Smash Bros Clone - Multiplayer 3D Arena Game
+# Smash Bors - Multiplayer 3D Arena Game
 
 Author [https://github.com/Vince-0](https://github.com/Vince-0/Projects)
 
@@ -28,7 +28,7 @@ This is a physics-based multiplayer game where players:
 ## Project Structure
 
 ```
-smash-bors-clone/
+smash-bors/
 ├── .augment/                    # Augment AI workflow files
 │   ├── augment-README          # This README file
 │   ├── augment-chathistory     # Complete chat history with AI
@@ -77,7 +77,7 @@ smash-bors-clone/
 1. **Clone or download the project**
 ```bash
 git clone <repository-url>
-cd smash-bors-clone
+cd smash-bors
 ```
 
 2. **Install dependencies**
